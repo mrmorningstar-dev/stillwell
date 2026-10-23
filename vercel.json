@@ -2,7 +2,7 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
-  "functions": {"api/page.js": {"includeFiles": ["dist/app.js", "shell.html"], "maxDuration": 30}},
+  "functions": {"api/page.js": {"includeFiles": "{dist/app.js,shell.html}", "maxDuration": 30}},
   "rewrites": [
     {"source": "/", "destination": "/api/page?path=/"},
     {"source": "/:path((?!assets/|vendor/|app\\.js|cms\\.js|config\\.js|style\\.css|api/).*)", "destination": "/api/page?path=/:path"}
