@@ -16,3 +16,5 @@ button.text-link{border:0;background:transparent;text-align:left}section[id]{scr
 @media(max-width:800px){.hero-image{height:450px}}
 @media(max-width:560px){.hero-image{height:390px}}
 @media(max-width:360px){.hero h1{font-size:44px}.hero-actions{gap:12px}.hero-actions .btn{padding:13px 20px}.brand{font-size:24px}.nav-end .btn{padding:9px 13px}}
+
+button:disabled{opacity:.55;cursor:wait}.form-error{color:var(--ink);font-weight:600}.login .form{text-align:left;margin:28px 0}.login .form-error:empty{display:none}

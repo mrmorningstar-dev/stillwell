@@ -1,14 +1,6 @@
-import {readFile,writeFile,mkdir} from 'node:fs/promises';
-import vm from 'node:vm';
-import crypto from 'node:crypto';
-const source=await readFile('dist/app.js','utf8');
-let template=await readFile('dist/index.html','utf8');
-template=template.replace(/<div id="app">[\s\S]*?<\/div><!--prerender-end-->/,'<div id="app"></div>');
-function page(path){const elements=new Map();const element=s=>{if(!elements.has(s))elements.set(s,{innerHTML:'',content:'',href:'',dataset:{},addEventListener(){},classList:{add(){},remove(){}}});return elements.get(s)};const context={console,structuredClone,URL,URLSearchParams,crypto,Date,setTimeout,clearTimeout,location:new URL(path,'https://stillwell-care-tanuj.swoonywhale4.chatgpt.site'),localStorage:{getItem(){return null}},sessionStorage:{getItem(){return null}},matchMedia:()=>({matches:false}),document:{documentElement:{dataset:{}},querySelector:element,addEventListener(){},title:''},window:{addEventListener(){}}};vm.createContext(context);vm.runInContext(source,context);return {html:element('#app').innerHTML,title:context.document.title,description:element('meta[name=description]').content,posts:vm.runInContext('posts',context)};}
-const root=page('/');
-const routes=['/','/services','/about','/blog','/contact','/privacy','/admin','/admin/new',...root.posts.filter(p=>p.status==='published').map(p=>'/blog/'+p.slug)];
-const esc=s=>s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-for(const route of routes){const p=page(route);const post=p.posts.find(x=>'/blog/'+x.slug===route);const desc=post?.excerpt||p.description;let html=template.replace(/<title>.*?<\/title>/,`<title>${esc(p.title)}</title>`).replace(/(<meta name="description" content=")[^"]*/,`$1${esc(desc)}`).replace(/(<link rel="canonical" href=")[^"]*/,`$1https://stillwell-care-tanuj.swoonywhale4.chatgpt.site${route}`).replace(/(<meta property="og:title" content=")[^"]*/,`$1${esc(p.title)}`).replace(/(<meta property="og:description" content=")[^"]*/,`$1${esc(desc)}`).replace('<div id="app"></div>',`<div id="app">${p.html}</div><!--prerender-end-->`);if(route.startsWith('/admin'))html=html.replace('</head>','<meta name="robots" content="noindex,nofollow"></head>');if(post){const schema={'@context':'https://schema.org','@type':'BlogPosting',headline:post.title,description:post.excerpt,datePublished:post.date,image:'https://stillwell-care-tanuj.swoonywhale4.chatgpt.site'+post.image,author:{'@type':'Organization',name:'Stillwell concept journal'}};html=html.replace('</head>',`<script type="application/ld+json">${JSON.stringify(schema).replace(/</g,'\\u003c')}</script></head>`);}const folder=route==='/'?'dist':'dist'+route;await mkdir(folder,{recursive:true});await writeFile(folder+'/index.html',html);}
-await writeFile('dist/sitemap.xml','<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+routes.filter(r=>!r.startsWith('/admin')).map(r=>`<url><loc>https://stillwell-care-tanuj.swoonywhale4.chatgpt.site${r}</loc></url>`).join('')+'</urlset>');
-await writeFile('dist/robots.txt','User-agent: *\nDisallow: /admin\nSitemap: https://stillwell-care-tanuj.swoonywhale4.chatgpt.site/sitemap.xml\n');
-console.log(`Built ${routes.length} prerendered routes and sitemap.`);
+import {build} from 'esbuild';
+import {writeFile} from 'node:fs/promises';
+import {renderPage} from './lib/render.mjs';
+await build({stdin:{contents:"export {createClient} from '@supabase/supabase-js';",resolveDir:process.cwd()},bundle:true,format:'esm',platform:'browser',minify:true,outfile:'dist/vendor/supabase.js'});
+await writeFile('dist/index.html',renderPage('/',[],process.env.SITE_URL||'http://localhost:4173').html);
+console.log('Built browser client and server-rendered page shell.');

@@ -1,1 +1,1 @@
-{"name":"stillwell","version":"1.0.0","private":true,"type":"module","scripts":{"dev":"node server.mjs","build":"node build.mjs","check":"node --check dist/app.js"}}
+{"name":"stillwell","version":"1.0.0","private":true,"type":"module","scripts":{"dev":"node server.mjs","build":"node build.mjs","check":"node --check dist/app.js"},"dependencies":{"@supabase/supabase-js":"2.118.0"},"devDependencies":{"esbuild":"0.28.2"}}

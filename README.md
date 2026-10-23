@@ -1,24 +1,31 @@
-# Stillwell website UI
+# Stillwell
 
-An independent mental wellness website concept built with the project's Taste and Apple design skills. Talkspace informed scope, not layout or branding.
+Responsive website and shared blog management portal, using Supabase Auth, Postgres and Storage, with live server-rendered public pages on Vercel.
 
-## Run
+## Development
 
-`npm run dev` serves the website at http://127.0.0.1:4173. No package installation is required. `npm run check` checks JavaScript syntax. `npm run build` writes static route entrypoints and sitemap metadata.
+- Node.js 24, npm ci, npm run build, npm run dev.
+- npm run check verifies browser syntax.
+- node --test tests/cms.test.mjs checks rendering and the configured database's anonymous access controls.
+- dist/config.js contains only public Supabase configuration. No service-role key or password belongs in this repository.
 
-## Included
+## Administrator setup
 
-- Responsive home, services, about, contact, journal, article, and privacy pages.
-- Interactive care selector, enquiry preview, FAQ, article search, and category filters.
-- Publishing workspace at `/admin` with create/edit/delete, drafts, publish/unpublish, text formatting, image uploads, article previews, URL uniqueness checks, and local persistence.
-- Keyboard navigation, native modal focus management, reduced motion and transparency preferences, light/dark theme, image dimensions, lazy loading, page metadata, and semantic headings.
+Create the administrator in Supabase Authentication (email/password; confirm the email), then add their auth user UUID to public.site_admins using the SQL editor or a trusted database administrator. Client accounts cannot grant themselves access. There is no public sign-up form.
 
-## Explicit preview boundaries
+## Publishing
 
-The user requested the UI. This is an interactive frontend, not a production medical service or secure CMS. Demo entry is clearly labeled and does not collect passwords. CMS state is browser-local; published edits are visible in the same browser only. Contact forms do not transmit or store enquiries. The provisional brand, care descriptions, and sample journal articles need client and editorial approval. Connect server-side authentication, a shared CMS database, image storage, email delivery, and final legal/service content before public launch. Host access protection is separate from application administrator authentication.
+Open /admin and sign in. Create a story, add text with heading/bold/italic formatting, choose a category, upload a JPG/PNG/WebP up to 2 MB, and save as Draft or Published. Optional tags, image alt text, search title and search description are supported. Publication date is a display date, not scheduled publishing. Published pages and the sitemap read Supabase on each request. Unpublishing removes public access immediately on a new request. Existing browser sessions refresh content on reload. Version checks prevent overwriting another editor's changes.
 
-## Design
+Draft text is restricted by row-level security. Featured images are public editorial assets; do not upload confidential material. Replaced/deleted images are removed when unused. Abandoned uploads can be cleaned up in the Supabase Storage dashboard.
 
-Taste values: design variance 5, motion intensity 3, visual density 3. Calm, accessible, light editorial direction; natural green palette; Manrope with platform fallback. Pill controls, 24px major surfaces, 10px inputs. Apple principles are applied to press feedback, predictable navigation, modal focus, reading hierarchy, and accessible motion. No fabricated testimonials or clinical statistics.
+## Deployment
 
-Hero image: generated specifically for Stillwell using the built-in image generation tool, prompt describing a South Asian woman resting beside a sunlit window with a muted sage palette. Other images: Unsplash illustrative lifestyle photographs, source links in ASSETS.md. Images do not represent an actual team or clients.
+GitHub: https://github.com/mrmorningstar-dev/stillwell
+Vercel project: stillwell. Build: npm run build; output: dist. vercel.json routes public pages to api/page.js. SITE_URL optionally sets a canonical domain; otherwise Vercel's production domain is used.
+
+supabase/schema.sql documents the initial database setup and policies. It is not an idempotent migration; do not rerun on an existing project. supabase/seed.mjs contains sample editorial material only, not live drafts.
+
+## Deferred by the client
+
+Google sign-in, final branding/content/business policies and real contact delivery. Contact form remains an explicitly labelled testing preview: it validates input but sends and stores nothing. Existing service content is illustrative and does not offer appointments or clinical services.

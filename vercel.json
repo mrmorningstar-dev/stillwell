@@ -1,0 +1,15 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "functions": {"api/page.js": {"includeFiles": ["dist/app.js", "shell.html"], "maxDuration": 30}},
+  "rewrites": [
+    {"source": "/", "destination": "/api/page?path=/"},
+    {"source": "/:path((?!assets/|vendor/|app\\.js|cms\\.js|config\\.js|style\\.css|api/).*)", "destination": "/api/page?path=/:path"}
+  ],
+  "headers": [{"source": "/(.*)", "headers": [
+    {"key": "X-Content-Type-Options", "value": "nosniff"},
+    {"key": "Referrer-Policy", "value": "strict-origin-when-cross-origin"},
+    {"key": "X-Frame-Options", "value": "DENY"}
+  ]}]
+}
