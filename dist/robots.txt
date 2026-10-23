@@ -1,0 +1,3 @@
+User-agent: *
+Disallow: /admin
+Sitemap: https://stillwell-care-tanuj.swoonywhale4.chatgpt.site/sitemap.xml
