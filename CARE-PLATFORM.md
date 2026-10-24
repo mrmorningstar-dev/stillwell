@@ -1,6 +1,6 @@
 # Stillwell care website
 
-The India-focused expansion adds 51 public routes: therapy service pages, psychiatry, medication information, condition guides, resources, help, a provider directory, and test consultation/professional/referral forms. Route count is defined in `dist/care-site.js`.
+The India-focused expansion adds 50 public routes: therapy service pages, psychiatry, medication information, condition guides, resources, help, a provider directory, and test consultation/professional/referral forms. Route count is defined in `dist/care-site.js`.
 
 ## Administrator workflow
 
@@ -26,3 +26,7 @@ Use **Enquiries** to review the latest 500 test submissions and update their sta
 Run `npm run build`, `node --test tests/cms.test.mjs tests/care.test.mjs`, and `node --test tests/care-access.test.mjs`. Live access tests need network access; they use only the public publishable key and do not create users or read private enquiries.
 
 Content sources are linked on condition and medicine pages (NIMH, NHS, and MedlinePlus). Text is general educational material; clinical review by the service remains a launch prerequisite.
+
+## Deployment verification
+
+The live deployment passed 12 automated tests and 60 URL/asset checks. Browser verification covered desktop/mobile navigation, topic search, the guardian check, consultation and professional form submission, administrator enquiry status updates with reload persistence, private provider creation/editing with reload persistence, and the private reflection flow. The private test provider returned HTTP 404 to visitors and was removed after testing. Two closed test enquiries remain for review.
