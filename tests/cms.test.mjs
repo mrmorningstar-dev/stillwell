@@ -12,6 +12,10 @@ test('Articles render readable content and SEO without executing editor HTML',()
 test('Unpublished or missing articles return a real 404',()=>{
   assert.equal(renderPage('/blog/test-story',[],'https://stillwell-theta.vercel.app').status,404);
 });
+test('Heading formatting does not swallow the paragraph on the next line',()=>{
+  const {html}=renderPage('/blog/test-story',[{...post,body:'## Heading\nA regular paragraph.'}],'https://stillwell-theta.vercel.app');
+  assert.match(html,/<h2>Heading<\/h2><p>A regular paragraph\.<\/p>/);
+});
 test('Administrator page requires sign-in and is excluded from indexing',()=>{
   const {html}=renderPage('/admin',[],'https://stillwell-theta.vercel.app');
   assert.match(html,/id="login-form"/);assert.match(html,/noindex,nofollow/);assert.doesNotMatch(html,/Open demo workspace/);
