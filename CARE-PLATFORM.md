@@ -30,3 +30,11 @@ Content sources are linked on condition and medicine pages (NIMH, NHS, and Medli
 ## Deployment verification
 
 The live deployment passed 12 automated tests and 60 URL/asset checks. Browser verification covered desktop/mobile navigation, topic search, the guardian check, consultation and professional form submission, administrator enquiry status updates with reload persistence, private provider creation/editing with reload persistence, and the private reflection flow. The private test provider returned HTTP 404 to visitors and was removed after testing. Two closed test enquiries remain for review.
+
+## Content expansion, 25 October 2026
+
+A second audit checked content depth, not just route responses. All 50 care/resource routes now have at least three substantive sections. The 9 therapy pages include unique introductions, focus areas, session expectations, practical preparation, FAQs and related guides. The 13 condition guides and 9 medicine guides include topic-specific information and primary source links. Professional, resource, coverage, directory and help pages have expanded explanations. About, contact, privacy, journal and home sections were also expanded. The five existing published journal articles received original additional sections; existing text, status and metadata were preserved. The unpublished article was not changed.
+
+Content is original editorial draft material for an India-based service. Talkspace was reviewed as a structural reference; its reviews, credentials, service claims, prices and wording were not reused. Medical background was checked against linked NIMH, NHS and MedlinePlus sources. No doses or personalised treatment instructions are supplied. Clinical/editorial approval and actual operating details remain launch requirements.
+
+Run node --test tests/content.test.mjs tests/care.test.mjs tests/cms.test.mjs tests/care-access.test.mjs. All 16 tests passed, including content presence, section targets, internal routes, form retention, metadata, article rendering and live database access restrictions.

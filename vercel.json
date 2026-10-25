@@ -14,7 +14,7 @@
       "destination": "/api/page?path=/"
     },
     {
-      "source": "/:path((?!assets/|vendor/|app\\.js|cms\\.js|config\\.js|care-site\\.js|care-data\\.js|care-admin\\.js|style\\.css|care\\.css|api/).*)",
+      "source": "/:path((?!assets/|vendor/|app\\.js|cms\\.js|config\\.js|care-site\\.js|care-data\\.js|care-admin\\.js|content-details\\.js|content-sections\\.js|content\\.css|style\\.css|care\\.css|api/).*)",
       "destination": "/api/page?path=/:path"
     }
   ],
